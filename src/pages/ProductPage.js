@@ -5,7 +5,10 @@ import { getProductById } from '../services/api';
 function ProductPage() {
   const { id } = useParams();
   const [data, setData] = useState({});
+  const [user, setUser] = useState({ email: '', review: '', rating: undefined });
   const [isFreeShipping, setIsFreeShipping] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(false);
+
   const {
     title,
     thumbnail,
@@ -56,6 +59,76 @@ function ProductPage() {
     return sum;
   };
 
+  const handleInputChange = ({ target: { name, value } }) => {
+    setUser({ ...user, [name]: value });
+  };
+
+  const num = 5;
+
+  const ratingDivs = () => {
+    const rating = [];
+    for (let i = 0; i < num; i += 1) {
+      rating.push(
+        <label htmlFor={ i } key={ i }>
+          <input
+            data-testid={ `${i + 1}-rating` }
+            type="radio"
+            id={ i }
+            name="rating"
+            value={ i }
+            onChange={ handleInputChange }
+          />
+          {i}
+        </label>,
+      );
+    }
+    return rating;
+  };
+
+  const emailValidation = () => {
+    const regEx = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
+    return (!regEx.test(user.email));
+  };
+
+  const handleDisabledButton = () => {
+    const { rating } = user;
+    if (rating === undefined || emailValidation()) {
+      setDisabledButton(true);
+    } else {
+      setDisabledButton(false);
+    }
+  };
+
+  const handleAddReview = (e) => {
+    e.preventDefault();
+    handleDisabledButton();
+    if (!disabledButton) {
+      const { email, review, rating } = user;
+      const newReview = {
+        email,
+        review,
+        rating,
+      };
+      const reviews = JSON.parse(localStorage.getItem(`${id}`)) || [];
+      localStorage.setItem(`${id}`, JSON.stringify([...reviews, newReview]));
+      setUser({ email: '', review: '', rating: undefined });
+    }
+  };
+
+  useEffect(() => {
+    // handleDisabledButton();
+    emailValidation();
+  }, [user]);
+
+  const getReviews = () => {
+    const reviews = JSON.parse(localStorage.getItem(`${id}`)) || [];
+    return reviews;
+  };
+
+  useEffect(() => {
+    getReviews();
+  }, []);
+
   return (
     <div>
       <div>
@@ -97,6 +170,55 @@ function ProductPage() {
         >
           Adicionar ao Carrinho
         </button>
+      </div>
+      <div>
+        <form action="get">
+          <input
+            value={ user.email }
+            name="email"
+            type="text"
+            data-testid="product-detail-email"
+            placeholder="Digite seu email"
+            onChange={ handleInputChange }
+          />
+          {
+            ratingDivs()
+          }
+          <textarea
+            name="review"
+            value={ user.review }
+            data-testid="product-detail-evaluation"
+            placeholder="Digite sua avaliação"
+            onChange={ handleInputChange }
+          />
+          <button
+            type="button"
+            data-testid="submit-review-btn"
+            onClick={ handleAddReview }
+          >
+            Enviar
+          </button>
+        </form>
+        {
+          disabledButton && (<p data-testid="error-msg">Campos inválidos</p>)
+        }
+      </div>
+      <div>
+        {
+          getReviews().map((review, index) => (
+            <div key={ index }>
+              <p data-testid="review-card-evaluation">
+                {review.review}
+              </p>
+              <p data-testid="review-card-email">
+                {review.email}
+              </p>
+              <p data-testid="review-card-rating">
+                {review.rating}
+              </p>
+            </div>
+          ))
+        }
       </div>
     </div>
   );

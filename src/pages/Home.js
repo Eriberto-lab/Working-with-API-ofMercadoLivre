@@ -40,7 +40,7 @@ export default class Home extends Component {
   handleCategoryClick = async (event) => {
     const { value } = event.target;
     const data = await getProductsFromCategoryAndQuery(value, null);
-
+    console.log(data);
     this.setState({
       listItems: data.results,
     });
@@ -83,6 +83,7 @@ export default class Home extends Component {
                   thumbnail,
                   price,
                   available_quantity: availableQuantity,
+                  shipping: { free_shipping: freeShipping },
                 }) => (
                   <SearchItem
                     key={ id }
@@ -91,6 +92,7 @@ export default class Home extends Component {
                     price={ price }
                     id={ id }
                     availableQuantity={ availableQuantity }
+                    freeShipping={ freeShipping }
                   />
                 ),
               )

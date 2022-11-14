@@ -11,11 +11,20 @@ function ProductPage() {
     price,
     attributes,
     available_quantity: availableQuantity,
+    shipping: { free_shipping: freeShipping },
   } = data;
 
   const handleAddCart = () => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const product = { id, title, thumbnail, price, quantity: 1, availableQuantity };
+    const product = {
+      id,
+      title,
+      thumbnail,
+      price,
+      quantity: 1,
+      availableQuantity,
+      freeShipping,
+    };
     const productExists = cart.find((item) => item.id === id);
 
     if (productExists) {
@@ -56,6 +65,7 @@ function ProductPage() {
           src={ thumbnail }
           alt={ title }
         />
+        {freeShipping && <p data-testid="free-shipping">Frete Grátis</p>}
         <h2 data-testid="product-detail-price">
           R$
           {price}

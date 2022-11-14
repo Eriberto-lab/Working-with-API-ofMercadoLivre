@@ -81,6 +81,11 @@ export default class ShoppingCart extends Component {
                     alt={ item.title }
                   />
                   <p data-testid="shopping-cart-product-name">{item.title}</p>
+                  {
+                    item.freeShipping && (
+                      <p data-testid="free-shipping">Frete Grátis</p>
+                    )
+                  }
                   <p>{`R$ ${item.price}`}</p>
                   <button
                     data-testid="product-decrease-quantity"

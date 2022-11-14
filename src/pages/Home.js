@@ -45,17 +45,6 @@ export default class Home extends Component {
     });
   };
 
-  sumProducts = () => {
-    const getItems = JSON.parse(localStorage.getItem('cart')) || [];
-    let sum = 0;
-    getItems.forEach((item) => {
-      sum += item.quantity;
-    });
-    return (
-      <span>{sum}</span>
-    );
-  };
-
   render() {
     const { listItems, item, foundItems } = this.state;
 

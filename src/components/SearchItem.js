@@ -6,9 +6,17 @@ import { Link } from 'react-router-dom';
 
 export default class SearchItem extends Component {
   handleAddCart = () => {
-    const { title, thumbnail, price, id, availableQuantity } = this.props;
+    const { title, thumbnail, price, id, availableQuantity, freeShipping } = this.props;
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const product = { id, title, thumbnail, price, quantity: 1, availableQuantity };
+    const product = {
+      id,
+      title,
+      thumbnail,
+      price,
+      quantity: 1,
+      availableQuantity,
+      freeShipping,
+    };
     const productExists = cart.find((item) => item.id === id);
 
     if (productExists) {
@@ -25,7 +33,7 @@ export default class SearchItem extends Component {
   };
 
   render() {
-    const { title, thumbnail, price, id } = this.props;
+    const { title, thumbnail, price, id, freeShipping } = this.props;
 
     return (
       <div
@@ -44,6 +52,7 @@ export default class SearchItem extends Component {
             src={ thumbnail }
             alt={ title }
           />
+          {freeShipping && <p data-testid="free-shipping">Frete Grátis</p>}
           <h2>
             R$
             {price}
@@ -67,4 +76,6 @@ SearchItem.propTypes = {
   title: PropTypes.string,
   thumbnail: PropTypes.string,
   price: PropTypes.number,
+  availableQuantity: PropTypes.number,
+  freeShipping: PropTypes.bool,
 }.isRequired;

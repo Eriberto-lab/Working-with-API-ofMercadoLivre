@@ -5,13 +5,13 @@ import { getProductById } from '../services/api';
 function ProductPage() {
   const { id } = useParams();
   const [data, setData] = useState({});
+  const [isFreeShipping, setIsFreeShipping] = useState(false);
   const {
     title,
     thumbnail,
     price,
     attributes,
     available_quantity: availableQuantity,
-    shipping: { free_shipping: freeShipping },
   } = data;
 
   const handleAddCart = () => {
@@ -23,7 +23,7 @@ function ProductPage() {
       price,
       quantity: 1,
       availableQuantity,
-      freeShipping,
+      isFreeShipping,
     };
     const productExists = cart.find((item) => item.id === id);
 
@@ -42,10 +42,19 @@ function ProductPage() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      getProductById(id).then((response) => setData(response));
+      getProductById(id).then((response) => {
+        setData(response);
+        setIsFreeShipping(response.shipping.free_shipping);
+      });
     };
     fetchProduct();
   }, []);
+
+  const sumProduct = () => {
+    const getItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const sum = getItems.reduce((acc, item) => acc + item.quantity, 0);
+    return sum;
+  };
 
   return (
     <div>
@@ -56,6 +65,9 @@ function ProductPage() {
         >
           Carrinho
         </Link>
+        <p data-testid="shopping-cart-size">
+          {sumProduct()}
+        </p>
       </div>
 
       <div>
@@ -65,7 +77,7 @@ function ProductPage() {
           src={ thumbnail }
           alt={ title }
         />
-        {freeShipping && <p data-testid="free-shipping">Frete Grátis</p>}
+        {isFreeShipping ? <p data-testid="free-shipping">Frete Grátis</p> : null}
         <h2 data-testid="product-detail-price">
           R$
           {price}

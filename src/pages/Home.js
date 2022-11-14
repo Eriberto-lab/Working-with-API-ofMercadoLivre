@@ -40,10 +40,20 @@ export default class Home extends Component {
   handleCategoryClick = async (event) => {
     const { value } = event.target;
     const data = await getProductsFromCategoryAndQuery(value, null);
-    console.log(data);
     this.setState({
       listItems: data.results,
     });
+  };
+
+  sumProducts = () => {
+    const getItems = JSON.parse(localStorage.getItem('cart')) || [];
+    let sum = 0;
+    getItems.forEach((item) => {
+      sum += item.quantity;
+    });
+    return (
+      <span>{sum}</span>
+    );
   };
 
   render() {
@@ -108,6 +118,9 @@ export default class Home extends Component {
         >
           Carrinho
         </Link>
+        <div data-testid="shopping-cart-size">
+          {2}
+        </div>
       </div>
     );
   }

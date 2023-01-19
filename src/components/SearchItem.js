@@ -6,10 +6,19 @@ import { Link } from 'react-router-dom';
 
 export default class SearchItem extends Component {
   handleAddCart = () => {
-    const { title, thumbnail, price, id } = this.props;
+    const { title, thumbnail, price, id, availableQuantity, freeShipping } = this.props;
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const product = { id, title, thumbnail, price, quantity: 1 };
+    const product = {
+      id,
+      title,
+      thumbnail,
+      price,
+      quantity: 1,
+      availableQuantity,
+      freeShipping,
+    };
     const productExists = cart.find((item) => item.id === id);
+
     if (productExists) {
       const newCart = cart.map((item) => {
         if (item.id === id) {
@@ -24,7 +33,7 @@ export default class SearchItem extends Component {
   };
 
   render() {
-    const { title, thumbnail, price, id } = this.props;
+    const { title, thumbnail, price, id, freeShipping } = this.props;
 
     return (
       <div
@@ -32,26 +41,29 @@ export default class SearchItem extends Component {
         className="itemContainer"
       >
         <Link
-          to={ `/product/${id}` }
           data-testid="product-detail-link"
+          to={ `/product/${id}` }
         >
           {title}
         </Link>
+
         <div className="descContainer">
           <img
             src={ thumbnail }
             alt={ title }
           />
+          {freeShipping && <p data-testid="free-shipping">Frete Grátis</p>}
           <h2>
             R$
             {price}
           </h2>
+
           <button
+            data-testid="product-add-to-cart"
             type="button"
             onClick={ this.handleAddCart }
-            data-testid="product-add-to-cart"
           >
-            Adicionar ao carrinho
+            Adicionar ao Carrinho
           </button>
         </div>
       </div>
@@ -60,8 +72,10 @@ export default class SearchItem extends Component {
 }
 
 SearchItem.propTypes = {
+  id: PropTypes.string,
   title: PropTypes.string,
   thumbnail: PropTypes.string,
   price: PropTypes.number,
-  id: PropTypes.string,
+  availableQuantity: PropTypes.number,
+  freeShipping: PropTypes.bool,
 }.isRequired;

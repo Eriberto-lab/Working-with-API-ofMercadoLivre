@@ -24,15 +24,15 @@ export default class Home extends Component {
 
     if (data.results.length === 0) {
       this.setState({
-        foundItems: false,
-        item: '',
         listItems: [],
+        item: '',
+        foundItems: false,
       });
     } else {
       this.setState({
-        foundItems: true,
         listItems: data.results,
         item: '',
+        foundItems: true,
       });
     }
   };
@@ -51,6 +51,7 @@ export default class Home extends Component {
     return (
       <div className="appContainer">
         <Categories onClick={ this.handleCategoryClick } />
+
         <div>
           <input
             data-testid="query-input"
@@ -65,22 +66,35 @@ export default class Home extends Component {
           >
             Pequisar
           </button>
+
           {listItems.length !== 0 ? null : (
             <p data-testid="home-initial-message">
               Digite algum termo de pesquisa ou escolha uma categoria.
             </p>
           )}
+
           <div className="productsContainer">
             {foundItems ? (
-              listItems.map(({ id, title, thumbnail, price }) => (
-                <SearchItem
-                  key={ id }
-                  title={ title }
-                  thumbnail={ thumbnail }
-                  price={ price }
-                  id={ id }
-                />
-              ))
+              listItems.map(
+                ({
+                  id,
+                  title,
+                  thumbnail,
+                  price,
+                  available_quantity: availableQuantity,
+                  shipping: { free_shipping: freeShipping },
+                }) => (
+                  <SearchItem
+                    key={ id }
+                    title={ title }
+                    thumbnail={ thumbnail }
+                    price={ price }
+                    id={ id }
+                    availableQuantity={ availableQuantity }
+                    freeShipping={ freeShipping }
+                  />
+                ),
+              )
             ) : (
               <p>Nenhum produto foi encontrado</p>
             )}
@@ -93,6 +107,9 @@ export default class Home extends Component {
         >
           Carrinho
         </Link>
+        <div data-testid="shopping-cart-size">
+          {2}
+        </div>
       </div>
     );
   }

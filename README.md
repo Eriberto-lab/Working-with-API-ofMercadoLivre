@@ -1,13 +1,11 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+# Loja Online com API do Mercado Livre
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+Este projeto foi desenvolvido em grupo com o objetivo de aprimorar nossas habilidades de programação e trabalhar em equipe. Utilizamos a API do Mercado Livre para buscar produtos por termos e categorias e interagimos com esses produtos, adicionando e removendo-os do carrinho de compras em diferentes quantidades. Também visualizamos detalhes e avaliações prévias dos produtos, bem como criamos novas avaliações e simulamos a finalização da compra dos itens selecionados.
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+## Habilidades Utilizadas
+Para a construção do projeto, utilizamos React com o BrowserRouter para criar uma aplicação web. Além disso, para gerenciar as tarefas e organizar o trabalho em equipe, utilizamos o Trello e a metodologia Scrum.
+
+## Funcionalidades
+O carrinho de compras permite adicionar e remover produtos, além de definir quantidades diferentes para cada item. Também é possível visualizar detalhes do produto, como o título, o preço, a descrição, a quantidade disponível, as avaliações prévias e as imagens. Adicionalmente, é possível criar novas avaliações e verificá-las na lista de avaliações do produto.
+
+Por fim, simulamos a finalização da compra dos itens selecionados, exibindo um resumo da compra, incluindo o valor total e as informações de pagamento.
